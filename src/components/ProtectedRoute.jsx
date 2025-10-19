@@ -8,13 +8,29 @@ export default function ProtectedRoute({ children }) {
     useEffect(() => {
         const checkSession = async () => {
             const { data } = await supabase.auth.getSession();
-            if (!data.session) {
-                window.location.href = "/signin";
+            const session = data?.session;
+            const loggedIn = sessionStorage.getItem("loggedIn");
+
+            // ❌ Если нет сессии или нет флага loggedIn — на страницу входа
+            if (!session || !loggedIn) {
+                sessionStorage.removeItem("loggedIn");
+                supabase.auth.signOut();
+
+
+                window.location.replace("/signin");
+
+
+                window.history.pushState(null, "", window.location.href);
+                window.onpopstate = function () {
+                    window.location.replace("/signin");
+                };
             } else {
-                setUser(data.session.user);
+                setUser(session.user);
             }
+
             setLoading(false);
         };
+
         checkSession();
     }, []);
 

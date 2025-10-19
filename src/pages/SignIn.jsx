@@ -22,6 +22,7 @@ export default function SignIn() {
         if (error) {
             setError(error.message);
         } else {
+            sessionStorage.setItem("loggedIn", "true"); // 👈
             alert("Login successful!");
             window.location.href = "/";
         }
