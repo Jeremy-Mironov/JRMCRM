@@ -79,7 +79,7 @@ export default function DataTable({ columns, data }) {
             <input
                 type="text"
                 placeholder="Search..."
-                className="p-2 border rounded w-full sm:w-100hv text-gray-800 dark:text-white dark:bg-gray-700"
+                className="p-2  rounded w-full sm:w-100hv text-gray-800 dark:text-white dark:bg-gray-700"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
             />

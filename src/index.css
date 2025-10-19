@@ -1,1 +1,13 @@
 @import "tailwindcss";
+.css-r7f15b {
+    display: flex
+;
+    position: relative;
+    color: aliceblue;
+    height: 700px;
+    overflow: hidden;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0px;}
