@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // добавили useEffect
 import {
     Bars3Icon,
     XMarkIcon,
@@ -8,27 +8,66 @@ import {
     UsersIcon,
     FolderIcon,
     ArrowRightOnRectangleIcon,
+    ArrowLeftOnRectangleIcon,
     UserPlusIcon,
     BriefcaseIcon,
     QuestionMarkCircleIcon,
     Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
+import { supabase } from "../supabaseClient";
 
 const menuItems = [
     { name: "Dashboard", icon: HomeIcon, href: "/" },
-    { name: "Feature", icon: RectangleStackIcon, href: "#" },
+    { name: "Gallery", icon: RectangleStackIcon, href: "/Gallery" },
     { name: "Inbox", icon: InboxIcon, href: "#", count: 3 },
     { name: "Users", icon: UsersIcon, href: "#" },
     { name: "Projects", icon: FolderIcon, href: "/Projects" },
     { name: "Settings", icon: Cog6ToothIcon, href: "#" },
     { name: "Upgrade to Pro", icon: BriefcaseIcon, href: "#" },
     { name: "Help", icon: QuestionMarkCircleIcon, href: "#" },
-    { name: "Sign In", icon: ArrowRightOnRectangleIcon, href: "#" },
-    { name: "Sign Up", icon: UserPlusIcon, href: "#" },
 ];
 
 export default function Sidebar() {
     const [open, setOpen] = useState(false);
+    const [user, setUser] = useState(null); // добавили состояние пользователя
+
+    // 🔹 отслеживание сессии и изменений авторизации
+    useEffect(() => {
+        let mounted = true;
+
+        (async () => {
+            try {
+                const { data, error } = await supabase.auth.getSession();
+                if (error) console.error("supabase.getSession error:", error);
+                else if (mounted) setUser(data?.session?.user ?? null);
+            } catch (err) {
+                console.error("getSession failed:", err);
+            }
+        })();
+
+        // подписка
+        const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+            console.log("Auth change:", _event);
+            setUser(session?.user ?? null);
+        });
+
+        // безопасная отписка
+        return () => {
+            mounted = false;
+            try {
+                // проверяем все возможные формы
+                listener?.subscription?.unsubscribe?.();
+                listener?.unsubscribe?.(); // если supabase 2.x
+            } catch (err) {
+                console.warn("Listener cleanup error:", err);
+            }
+        };
+    }, []);
+
+
+    const handleAuthClick = async () => {
+        window.location.href = "/signin";
+    };
 
     return (
         <>
@@ -70,6 +109,20 @@ export default function Sidebar() {
                                 </a>
                             </li>
                         ))}
+                        {/* 🔹 кнопка вход/выход */}
+                        <li>
+                            <button
+                                onClick={handleAuthClick}
+                                className="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                            >
+                                {user ? <ArrowRightOnRectangleIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" /> : <ArrowLeftOnRectangleIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" />}
+
+                                <span className="flex-1 ms-3 whitespace-nowrap text-left">
+                                    {user ? "Sign Out" : "Sign In"}
+                                </span>
+                            </button>
+                            <p className="text-white p-7 text-left">{user ? user.email : ""} </p>
+                        </li>
                     </ul>
                 </div>
             </aside>
