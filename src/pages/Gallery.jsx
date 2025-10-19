@@ -5,26 +5,26 @@ import InfiniteMenu from "../assets/InfiniteMenu";
 
 const items = [
     {
-        image: 'src/assets/1.jpg',
-        link: 'src/assets/1.jpg',
+        image: '1.jpg',
+        link: '1.jpg',
         title: 'Item 1',
         description: 'This is pretty cool, right?'
     },
     {
-        image: 'src/assets/2.jpg',
-        link: 'src/assets/2.jpg',
+        image: '2.jpg',
+        link: '2.jpg',
         title: 'Item 2',
         description: 'This is pretty cool, right?'
     },
     {
-        image: 'src/assets/3.jpg',
-        link: 'src/assets/3.jpg',
+        image: '3.jpg',
+        link: '3.jpg',
         title: 'Item 3',
         description: 'This is pretty cool, right?'
     },
     {
-        image: 'src/assets/4.jpg',
-        link: 'src/assets/4.jpg',
+        image: '4.jpg',
+        link: '4.jpg',
         title: 'Item 4',
         description: 'This is pretty cool, right?'
     }
