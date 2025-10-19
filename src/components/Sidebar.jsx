@@ -16,7 +16,7 @@ import {
 
 const menuItems = [
     { name: "Dashboard", icon: HomeIcon, href: "/" },
-    { name: "Kanban", icon: RectangleStackIcon, href: "#" },
+    { name: "Feature", icon: RectangleStackIcon, href: "#" },
     { name: "Inbox", icon: InboxIcon, href: "#", count: 3 },
     { name: "Users", icon: UsersIcon, href: "#" },
     { name: "Projects", icon: FolderIcon, href: "/Projects" },

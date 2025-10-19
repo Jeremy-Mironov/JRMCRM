@@ -34,14 +34,13 @@ export const Projects = () => {
 
         try {
             const { data, error } = await supabase
-                .from("projects") // название таблицы
+                .from("projects")
                 .insert([newProject]);
 
             if (error) throw error;
 
             console.log("✅ Added new project:", data);
 
-            // После добавления закрываем модалку
             setIsModalOpen(false);
             setNewProject({
                 name: "",
@@ -52,7 +51,6 @@ export const Projects = () => {
                 deadline: "",
             });
 
-            // Можно обновить список (если useProjects поддерживает перезапрос)
             window.location.reload(); // временно, пока нет live update
         } catch (err) {
             console.error("❌ Error adding project:", err.message);
